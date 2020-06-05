@@ -1,62 +1,87 @@
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringReader;
 
-import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.impl.FizzBuzz;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.interfaces.FizzBuzz;
+
+/**
+ * Tests for FizzBuzz
+ */
 public class FizzBuzzTest {
+
 	private PrintStream out;
 	private FizzBuzz fb;
 
+	/**
+	 * @return void
+	 */
 	@Before
 	public void setUp() {
-		fb = new FizzBuzz();
-		out = System.out;
+		final ApplicationContext context = new ClassPathXmlApplicationContext(TestConstants.SPRING_XML);
+		this.fb = (FizzBuzz) context.getBean(TestConstants.STANDARD_FIZZ_BUZZ);
+		this.out = System.out;
+		((ConfigurableApplicationContext) context).close();
 	}
 
+	/**
+	 * @return void
+	 */
 	@After
 	public void tearDown() {
-		System.setOut(out);
+		System.setOut(this.out);
 	}
 
-	private void doFizzBuzz(int n, String s) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		BufferedOutputStream bos = new BufferedOutputStream(baos);
+	/**
+	 * @param n int
+	 * @param s String
+	 * @throws IOException
+	 */
+	private void doFizzBuzz(final int n, final String s) throws IOException {
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final BufferedOutputStream bos = new BufferedOutputStream(baos);
 		System.setOut(new PrintStream(bos));
 
-		fb.fizzBuzz(n);
+		this.fb.fizzBuzz(n);
 
 		System.out.flush();
-		assertEquals(s, baos.toString());
+		String platformDependentExpectedResult = s.replaceAll("\\n", System.getProperty("line.separator"));
+		assertEquals(platformDependentExpectedResult, baos.toString());
 	}
 
+	/**
+	 * @throws IOException
+	 * @return void
+	 */
 	@Test
 	public void testFizzBuzz() throws IOException {
-		doFizzBuzz(1, "1\n");
-		doFizzBuzz(2, "1\n2\n");
-		doFizzBuzz(3, "1\n2\nFizz\n");
-		doFizzBuzz(4, "1\n2\nFizz\n4\n");
-		doFizzBuzz(5, "1\n2\nFizz\n4\nBuzz\n");
-		doFizzBuzz(6, "1\n2\nFizz\n4\nBuzz\nFizz\n");
-		doFizzBuzz(7, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n");
-		doFizzBuzz(8, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\n");
-		doFizzBuzz(9, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\n");
-		doFizzBuzz(10, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n");
-		doFizzBuzz(11, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\n");
-		doFizzBuzz(12, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n");
-		doFizzBuzz(13, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n");
-		doFizzBuzz(14, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\n");
-		doFizzBuzz(15, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n");
-		doFizzBuzz(16, "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n");
+		this.doFizzBuzz(TestConstants.INT_1, TestConstants._1_);
+		this.doFizzBuzz(TestConstants.INT_2, TestConstants._1_2_);
+		this.doFizzBuzz(TestConstants.INT_3, TestConstants._1_2_FIZZ);
+		this.doFizzBuzz(TestConstants.INT_4, TestConstants._1_2_FIZZ_4);
+		this.doFizzBuzz(TestConstants.INT_5, TestConstants._1_2_FIZZ_4_BUZZ);
+		this.doFizzBuzz(TestConstants.INT_6, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ);
+		this.doFizzBuzz(TestConstants.INT_7, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7);
+		this.doFizzBuzz(TestConstants.INT_8, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8);
+		this.doFizzBuzz(TestConstants.INT_9, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ);
+		this.doFizzBuzz(TestConstants.INT_10, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ);
+		this.doFizzBuzz(TestConstants.INT_11, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ_11);
+		this.doFizzBuzz(TestConstants.INT_12, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ_11_FIZZ);
+		this.doFizzBuzz(TestConstants.INT_13, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ_11_FIZZ_13);
+		this.doFizzBuzz(TestConstants.INT_14, TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ_11_FIZZ_13_14);
+		this.doFizzBuzz(TestConstants.INT_15,
+				TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ_11_FIZZ_13_14_FIZZ_BUZZ);
+		this.doFizzBuzz(TestConstants.INT_16,
+				TestConstants._1_2_FIZZ_4_BUZZ_FIZZ_7_8_FIZZ_BUZZ_11_FIZZ_13_14_FIZZ_BUZZ_16);
 	}
+
 }

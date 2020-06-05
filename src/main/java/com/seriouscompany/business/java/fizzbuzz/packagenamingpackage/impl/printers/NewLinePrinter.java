@@ -1,27 +1,25 @@
 package com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.impl.printers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.impl.factories.SystemOutFizzBuzzOutputStrategyFactory;
-import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.impl.stringreturners.NewLineStringReturner;
-import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.interfaces.factories.FizzBuzzOutputStrategyFactory;
-import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.interfaces.strategies.FizzBuzzOutputStrategy;
 
+/**
+ * Printer for New Line
+ */
+@Service
 public class NewLinePrinter {
-	
-	private final FizzBuzzOutputStrategy outputStrategy;
-	
-	public NewLinePrinter() {
-		FizzBuzzOutputStrategyFactory factory = new SystemOutFizzBuzzOutputStrategyFactory();
-		this.outputStrategy = factory.createOutputStrategy();
+
+	private final SystemOutFizzBuzzOutputStrategyFactory _systemOutFizzBuzzOutputStrategyFactory;
+
+	/**
+	 * @param _systemOutFizzBuzzOutputStrategyFactory
+	 */
+	@Autowired
+	public NewLinePrinter(final SystemOutFizzBuzzOutputStrategyFactory _systemOutFizzBuzzOutputStrategyFactory) {
+		super();
+		this._systemOutFizzBuzzOutputStrategyFactory = _systemOutFizzBuzzOutputStrategyFactory;
 	}
 
-	public void printNewLine() {
-		final NewLineStringReturner myNewLineStringReturner = new NewLineStringReturner();
-		final String myNewLineString = myNewLineStringReturner.getReturnString();
-		try {
-			this.outputStrategy.output(myNewLineString);
-		} catch (Exception e) {
-			// We're the enterprise...we don't get exceptions!
-		}
-	}
-	
 }
