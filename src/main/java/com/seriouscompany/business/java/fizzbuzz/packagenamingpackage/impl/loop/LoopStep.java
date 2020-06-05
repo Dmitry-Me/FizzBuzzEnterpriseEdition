@@ -1,11 +1,21 @@
 package com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.impl.loop;
 
+import org.springframework.stereotype.Service;
+
+import com.seriouscompany.business.java.fizzbuzz.packagenamingpackage.impl.Constants;
+
+/**
+ * LoopStep
+ */
+@Service
 public class LoopStep {
 
-	private static final int LOOP_INC_VALUE = 1;
-	
-	public int stepLoop(int nCurrentNumber) {
-		return nCurrentNumber + LoopStep.LOOP_INC_VALUE;
+	/**
+	 * @param nCurrentNumber int
+	 * @return int
+	 */
+	public int stepLoop(final int nCurrentNumber) {
+		return nCurrentNumber + Constants.LOOP_INC_VALUE;
 	}
 
 }
